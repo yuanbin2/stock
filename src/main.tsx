@@ -7,16 +7,19 @@ import { RouterProvider } from "react-router-dom";
 import theme from "./theme";
 import "./index.css";
 import router from "./routes";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
+const queryCilent = new QueryClient();
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
       <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-      {/* <QueryClientProvider client={queryCilent}> */}
-      {/* <App /> */}
-      {/* <ReactQueryDevtools /> */}
-      {/* </QueryClientProvider> */}
-      <RouterProvider router={router}></RouterProvider>
+      <QueryClientProvider client={queryCilent}>
+        {/* <App /> */}
+        <RouterProvider router={router}></RouterProvider>
+        <ReactQueryDevtools />
+      </QueryClientProvider>
     </ChakraProvider>
   </React.StrictMode>
 );

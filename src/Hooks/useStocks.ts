@@ -8,7 +8,7 @@ interface Stock {
     price_change_percentage: Float32Array;
   }
 const useStocks = (currentPage: number)=>
-useQuery({
+useQuery<FetchResponse<Stock>, Error>({
   queryKey: ['stocks'],
   queryFn: () =>
     apiClient2

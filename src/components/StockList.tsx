@@ -24,7 +24,7 @@ const StockList = () => {
     setCurrentPage(page);
   };
 
-  if (error) return null;
+  if (error) return <Text>{error.message}</Text>;
   else
     return (
       <>

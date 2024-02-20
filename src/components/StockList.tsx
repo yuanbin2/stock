@@ -41,9 +41,10 @@ const StockList = () => {
     setCurrentPage(page);
   };
 
+  if (error) return <Text color="red">{error}</Text>;
+
   return (
     <>
-      {error && <Text color="red">{error}</Text>}
       <Table variant="striped" colorScheme="gray">
         <Thead>
           <Tr>

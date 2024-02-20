@@ -13,8 +13,8 @@ import {
 import useStocks from "../Hooks/useStocks";
 
 const StockList = () => {
-  const [currentPage, setCurrentPage] = useState(50);
-  const { error, data, isLoading } = useStocks(currentPage);
+  const [currentPage, setCurrentPage] = useState(40);
+  const { error, data } = useStocks(currentPage);
   const total_count = data?.count;
   let page_num = 0;
   if (total_count !== undefined) {

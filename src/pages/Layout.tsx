@@ -1,7 +1,7 @@
 import { Box, Grid, GridItem, Show } from "@chakra-ui/react";
-import NavBar from "./components/NavBar";
-import GameGrid from "./components/GameGrid";
-import StockList from "./components/StockList";
+import StockList from "../components/StockList";
+import NavBar from "../components/NavBar";
+import { Outlet } from "react-router-dom";
 
 function App() {
   return (
@@ -19,14 +19,9 @@ function App() {
         <NavBar />
       </GridItem>
       <Show above="lg">
-        <GridItem area="aside">Aside</GridItem>
+        <GridItem area="aside"></GridItem>
       </Show>
-      <GridItem area="main">
-        {/* <GameGrid /> */}
-        <Box padding={5}>
-          <StockList />
-        </Box>
-      </GridItem>
+      <Outlet />
     </Grid>
   );
 }

@@ -40,23 +40,23 @@ const StockList = () => {
             </Tr>
           ))}
         </Tbody>
-        <Button
-          colorScheme="teal"
-          variant="solid"
-          onClick={() => handlePageChange(currentPage - 1)}
-          isDisabled={currentPage === 1}
-        >
-          Previous
-        </Button>
-        <Button
-          colorScheme="teal"
-          variant="solid"
-          onClick={() => handlePageChange(currentPage + 1)}
-          isDisabled={currentPage === total_count / 10}
-        >
-          Next
-        </Button>
       </Table>
+      <Button
+        colorScheme="teal"
+        variant="solid"
+        onClick={() => handlePageChange(currentPage - 1)}
+        isDisabled={currentPage === 1}
+      >
+        Previous
+      </Button>
+      <Button
+        colorScheme="teal"
+        variant="solid"
+        onClick={() => handlePageChange(currentPage + 1)}
+        isDisabled={currentPage === total_count / 10}
+      >
+        Next
+      </Button>
     </>
   );
 };

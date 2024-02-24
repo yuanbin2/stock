@@ -13,12 +13,13 @@ import {
 import useStocks from "../Hooks/useStocks";
 
 const StockList = () => {
-  const [currentPage, setCurrentPage] = useState(40);
+  const [currentPage, setCurrentPage] = useState(1);
   const { error, data } = useStocks(currentPage);
   const total_count = data?.count;
   let page_num = 0;
+  //计算总页数
   if (total_count !== undefined) {
-    page_num = total_count / 10;
+    page_num = Math.ceil(total_count / 10);
   }
   const handlePageChange = (page: number) => {
     setCurrentPage(page);

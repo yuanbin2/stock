@@ -15,5 +15,6 @@ const useStocks = (currentPage: number)=>
         .get<FetchResponse<Stock>>(`/stocks/?page=${currentPage}`)
         .then((res) => res.data),
     staleTime: 3 * 60 * 1000, // 3min
+    keepPreviousData: true
   });
 export default useStocks;

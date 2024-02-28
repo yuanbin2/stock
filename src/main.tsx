@@ -8,7 +8,8 @@ import { RouterProvider } from "react-router-dom";
 
 import theme from "./theme";
 import "./index.css";
-import router from "./routes";
+// import router from "./routes";
+import AppRouter from "./routes";
 
 const queryCilent = new QueryClient();
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
@@ -17,7 +18,8 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       <ColorModeScript initialColorMode={theme.config.initialColorMode} />
       <QueryClientProvider client={queryCilent}>
         {/* <App /> */}
-        <RouterProvider router={router}></RouterProvider>
+        {/* <RouterProvider router={router}></RouterProvider> */}
+        <AppRouter />
         <ReactQueryDevtools />
       </QueryClientProvider>
     </ChakraProvider>

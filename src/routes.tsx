@@ -1,15 +1,17 @@
-import { createBrowserRouter } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./pages/Layout";
 import HomePage from "./pages/HomePage";
 import ErrorPage from "./pages/ErrorPage";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Layout />,
-    errorElement: <ErrorPage />,
-    children: [{ index: true, element: <HomePage /> }],
-  },
-]);
+const AppRouter = () => (
+  <Router>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<HomePage />} />
+      </Route>
+      <Route path="*" element={<ErrorPage />} />
+    </Routes>
+  </Router>
+);
 
-export default router;
+export default AppRouter;

@@ -16,6 +16,8 @@ export interface Game {
     count: Number;
     results: Game[];
   }
+
+  
 const useGames = () =>{
   let [games, setGames] = useState<Game[]>([]);
   let [error, setError] = useState("");

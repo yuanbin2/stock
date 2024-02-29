@@ -11,10 +11,13 @@ import {
 } from "@chakra-ui/react";
 
 import useStocks from "../Hooks/useStocks";
+import { Link } from "react-router-dom";
 
 const StockList = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const { error, data } = useStocks(currentPage);
+
+  const { error, data, isLoading } = useStocks(currentPage);
+
   const total_count = data?.count;
   let page_num = 0;
   //计算总页数
@@ -40,7 +43,9 @@ const StockList = () => {
           <Tbody>
             {data?.results.map((stock) => (
               <Tr key={stock.name}>
-                <Td>{stock.name}</Td>
+                <Td>
+                  <Link to={"/" + stock.id}>{stock.name}</Link>
+                </Td>
                 <Td>{stock.price_change_percentage}</Td>
                 <Td>{stock.latest_price}</Td>
               </Tr>

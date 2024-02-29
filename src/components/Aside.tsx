@@ -30,8 +30,8 @@ const Aside = () => {
                 border="1px solid transparent"
                 _hover={{ color: "blue.500", bg: "gray.100" }}
                 _focus={{ outline: "none" }}
-                bg={selectedLink === index ? "blue.500" : "transparent"}
-                color="white"
+                bg={selectedLink === index ? "gray.300" : "transparent"}
+                color="blue.500"
                 onClick={() => handleSelectLink(index)}
               >
                 {urlMap[index]}

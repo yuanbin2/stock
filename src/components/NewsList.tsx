@@ -1,30 +1,37 @@
 import { useState } from "react";
 import {
   Button,
-  Spinner,
+  Text,
   Table,
   Tbody,
   Td,
-  Text,
   Th,
   Thead,
   Tr,
 } from "@chakra-ui/react";
-
-import useStocks from "../Hooks/useStocks";
+import useNews from "../Hooks/useNews";
 import { Link } from "react-router-dom";
 
-const StockList = () => {
+const formatTime = (time: string) => {
+  const date = new Date(time);
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  return `${year}年${month}月${day}日`;
+};
+
+const NewsList = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { error, data } = useStocks(currentPage);
+  const { error, data } = useNews(currentPage);
 
   const total_count = data?.count;
   let page_num = 0;
-  //计算总页数
+  // 计算总页数
   if (total_count !== undefined) {
     page_num = Math.ceil(total_count / 10);
   }
+
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
@@ -36,19 +43,17 @@ const StockList = () => {
         <Table variant="striped" colorScheme="gray">
           <Thead>
             <Tr>
-              <Th>股票名称</Th>
-              <Th>价格升降</Th>
-              <Th>最新价格</Th>
+              <Th>标题</Th>
+              <Th>时间</Th>
             </Tr>
           </Thead>
           <Tbody>
-            {data?.results.map((stock) => (
-              <Tr key={stock.name}>
+            {data?.results.map((news) => (
+              <Tr key={news.id}>
                 <Td>
-                  <Link to={"/" + stock.id}>{stock.name}</Link>
+                  <Link to={"/news/" + news.id}>{news.title}</Link>
                 </Td>
-                <Td>{stock.price_change_percentage}</Td>
-                <Td>{stock.latest_price}</Td>
+                <Td>{formatTime(news.time)}</Td>
               </Tr>
             ))}
           </Tbody>
@@ -76,4 +81,4 @@ const StockList = () => {
     );
 };
 
-export default StockList;
+export default NewsList;

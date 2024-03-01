@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom";
-import useStocksdetail from "../Hooks/useStocksdetail";
 import { Box, GridItem, Heading, Spinner } from "@chakra-ui/react";
-import StockDetail from "../components/StockDetail";
+import NewsDetail from "../components/NewsDetail";
+import useNewsdetail from "../Hooks/useNewsdetail";
 
-const StockdetailPage = () => {
+const NewsdetailPage = () => {
   const { id } = useParams();
-  const { data: stock, isLoading, error } = useStocksdetail(id!);
+  const { data: news, isLoading, error } = useNewsdetail(id!);
   if (isLoading) return <Spinner />;
   if (error) throw error;
   return (
@@ -13,11 +13,11 @@ const StockdetailPage = () => {
       <GridItem area="main">
         {/* <GameGrid /> */}
         <Box padding={5}>
-          <StockDetail stock={stock} />
+          <NewsDetail news={news} />
         </Box>
       </GridItem>
     </>
   );
 };
 
-export default StockdetailPage;
+export default NewsdetailPage;

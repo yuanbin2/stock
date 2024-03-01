@@ -2,7 +2,7 @@ import { FetchResponse } from "./useData";
 import { useQuery } from "@tanstack/react-query";
 import APIClient from "../services/api-client2";
 
-interface Stock {
+export interface Stock {
     id: number;
     code: string;
     name: string;
@@ -16,10 +16,6 @@ const apiClient = new APIClient<Stock>('/stocks')
 const useStocks = (currentPage: number)=>
   useQuery<FetchResponse<Stock>, Error>({
     queryKey: ['stocks', currentPage],
-    // queryFn: () =>
-    //   apiClient2
-    //     .get<FetchResponse<Stock>>(`/stocks/?page=${currentPage}`)
-    //     .then((res) => res.data),
     queryFn: () =>
         apiClient.getPage('?page='+currentPage),
     staleTime: 3 * 60 * 1000, // 3min

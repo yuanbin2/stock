@@ -8,6 +8,7 @@ import MyordersPage from "./pages/MyordersPage";
 import NewsPage from "./pages/NewsPage";
 import MystockPage from "./pages/MystockPage";
 import StockdetailPage from "./pages/StockdetailPage";
+import NewsdetailPage from "./pages/NewsdetailPage";
 
 const AppRouter = () => (
   <Router>
@@ -15,11 +16,13 @@ const AppRouter = () => (
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
         <Route path=":id" index element={<StockdetailPage />} />
-
         <Route path="mycomment" index element={<MycommentPage />} />
         <Route path="mydetail" index element={<MydetailPage />} />
         <Route path="myorder" index element={<MyordersPage />} />
-        <Route path="news" index element={<NewsPage />} />
+
+        <Route path="news" index element={<NewsPage />}></Route>
+        <Route path="news/:id" index element={<NewsdetailPage />}></Route>
+
         <Route path="mystock" index element={<MystockPage />} />
       </Route>
       <Route path="*" element={<ErrorPage />} />

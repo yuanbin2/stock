@@ -1,43 +1,67 @@
-// RegisterPage.tsx
-
 import React, { useState } from "react";
 import axios from "axios";
+import { Input, Button, FormControl, FormLabel, Stack } from "@chakra-ui/react";
 
-const Register: React.FC = () => {
+const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
-  const handleRegister = async () => {
-    try {
-      const response = await axios.post("http://yourdomain.com/auth/users/", {
-        username: username,
-        password: password,
-      });
-      console.log("注册成功", response.data);
-      // 处理注册成功的逻辑，比如跳转到登录页面
-    } catch (error) {
-      console.error("注册失败", error);
-      // 处理注册失败的逻辑
-    }
+  const handleRegister = () => {
+    // 在这里编写注册逻辑，发送注册请求给后端
+    console.log("Registering...");
   };
 
   return (
-    <div>
-      <h2>注册页面</h2>
-      <input
-        type="text"
-        placeholder="用户名"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="密码"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={handleRegister}>注册</button>
-    </div>
+    <Stack spacing={3}>
+      <FormControl>
+        <FormLabel>Username</FormLabel>
+        <Input
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+      </FormControl>
+      <FormControl>
+        <FormLabel>Password</FormLabel>
+        <Input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </FormControl>
+      <FormControl>
+        <FormLabel>Confirm Password</FormLabel>
+        <Input
+          type="password"
+          placeholder="Confirm Password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+      </FormControl>
+      <FormControl>
+        <FormLabel>First Name</FormLabel>
+        <Input
+          placeholder="First Name"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+        />
+      </FormControl>
+      <FormControl>
+        <FormLabel>Last Name</FormLabel>
+        <Input
+          placeholder="Last Name"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+        />
+      </FormControl>
+      <Button colorScheme="blue" onClick={handleRegister}>
+        Register
+      </Button>
+    </Stack>
   );
 };
 

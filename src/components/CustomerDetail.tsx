@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Avatar, Text } from "@chakra-ui/react";
-import useCustomerdetail, { Customer } from "../Hooks/useStocksdetail";
+import useCustomerdetail, { Customer } from "../Hooks/useCustomerdetail";
 
 const CustomerDetail: React.FC = () => {
   const { data, isLoading, isError } = useCustomerdetail();

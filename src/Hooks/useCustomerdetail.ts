@@ -3,13 +3,24 @@ import { useQuery } from "@tanstack/react-query";
 import APIClient from "../services/api-client2";
 import { Stock } from "./useStocks";
 
-const apiClient = new APIClient<Stock>('/stocks');
 
-const useCustomerdetail = (id: number | string)=>
+export interface Customer {
+    id: number;
+    user_id: number;
+    phone: string | null;
+    birth_date: string | null;
+    membership: string;
+    avatar: string;
+    account_balance: number;
+  }
+  
+const apiClient = new APIClient<Customer>('/customers/me/');
+
+const useCustomerdetail = ()=>
   useQuery({
-    queryKey: ['stocks', id],
+    queryKey: ['customer'],
     queryFn: () =>
-        apiClient.getDetail(id),
+        apiClient.getData(),
     staleTime: 3 * 60 * 1000, // 3min
     keepPreviousData: true
   });

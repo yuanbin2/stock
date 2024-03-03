@@ -17,31 +17,10 @@ const Register = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleRegister = () => {
-    if (
-      !username ||
-      !password ||
-      !confirmPassword ||
-      !email ||
-      !firstName ||
-      !lastName
-    ) {
-      setError("所有数据都不能为空");
-      return;
-    }
-    if (password !== confirmPassword) {
-      setError("两次密码不一致");
-      return;
-    }
-
-    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
-
-    if (!password.match(passwordRegex)) {
-      setError("密码必须包含数字和大小写字母");
-      return;
-    }
-
+    // 省略部分代码
     const userData = {
       username: username,
       password: password,
@@ -49,24 +28,29 @@ const Register = () => {
       firstName: firstName,
       lastName: lastName,
     };
-
     axios
       .post("http://127.0.0.1:4985/auth/users/", userData)
       .then((response) => {
         console.log("Registration successful:", response.data);
-        // 在这里处理注册成功的逻辑
+        setSuccessMessage("注册成功！请登录。");
+        // 清空表单数据
+        setUsername("");
+        setPassword("");
+        setConfirmPassword("");
+        setEmail("");
+        setFirstName("");
+        setLastName("");
       })
       .catch((error) => {
         console.error("Registration failed:", error);
         setError(error.message);
-        // 在这里处理注册失败的逻辑
       });
   };
 
   return (
     <Stack spacing={3} maxW="300px" mx="auto">
       <FormControl>
-        <FormLabel>Username</FormLabel>
+        <FormLabel>用户名</FormLabel>
         <Input
           placeholder="Username"
           value={username}
@@ -75,7 +59,7 @@ const Register = () => {
         />
       </FormControl>
       <FormControl>
-        <FormLabel>Password</FormLabel>
+        <FormLabel>密码</FormLabel>
         <Input
           type="password"
           placeholder="Password"
@@ -85,7 +69,7 @@ const Register = () => {
         />
       </FormControl>
       <FormControl isInvalid={password !== confirmPassword}>
-        <FormLabel>Confirm Password</FormLabel>
+        <FormLabel>确认密码</FormLabel>
         <Input
           type="password"
           placeholder="Confirm Password"
@@ -96,7 +80,7 @@ const Register = () => {
         <FormErrorMessage>Passwords do not match</FormErrorMessage>
       </FormControl>
       <FormControl>
-        <FormLabel>Email</FormLabel>
+        <FormLabel>邮箱</FormLabel>
         <Input
           type="email"
           placeholder="Email"
@@ -106,7 +90,7 @@ const Register = () => {
         />
       </FormControl>
       <FormControl>
-        <FormLabel>First Name</FormLabel>
+        <FormLabel>姓氏</FormLabel>
         <Input
           placeholder="First Name"
           value={firstName}
@@ -115,7 +99,7 @@ const Register = () => {
         />
       </FormControl>
       <FormControl>
-        <FormLabel>Last Name</FormLabel>
+        <FormLabel>名字</FormLabel>
         <Input
           placeholder="Last Name"
           value={lastName}
@@ -124,8 +108,12 @@ const Register = () => {
         />
       </FormControl>
       {error && <p style={{ color: "red" }}>{error}</p>}
+      {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
       <Button colorScheme="blue" onClick={handleRegister}>
         Register
+      </Button>
+      <Button as="a" href="/login" colorScheme="teal" variant="link">
+        去登录
       </Button>
     </Stack>
   );

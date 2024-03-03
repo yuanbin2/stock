@@ -8,7 +8,9 @@ import {
   Button,
   Center,
   FormErrorMessage,
+  Text,
 } from "@chakra-ui/react";
+import { Link, BrowserRouter as Router } from "react-router-dom";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -49,6 +51,7 @@ const LoginPage = () => {
         localStorage.setItem("refreshToken", refresh);
 
         axios.defaults.headers.common["Authorization"] = `JWT ${access}`;
+        window.location.href = "/";
       } else {
         // 登录失败，处理错误（如显示错误消息）
         console.log("登录失败");
@@ -63,7 +66,7 @@ const LoginPage = () => {
     <Center>
       <Box w="md" p={4} borderWidth="1px" borderRadius="md">
         <form onSubmit={handleLogin}>
-          <FormControl isRequired isInvalid={error !== ""}>
+          <FormControl isRequired isInvalid={error !== ""} mb={4}>
             <FormLabel htmlFor="username">用户名:</FormLabel>
             <Input
               type="text"
@@ -76,7 +79,8 @@ const LoginPage = () => {
             />
             <FormErrorMessage>{error}</FormErrorMessage>
           </FormControl>
-          <FormControl isRequired isInvalid={error !== ""}>
+
+          <FormControl isRequired isInvalid={error !== ""} mb={4}>
             <FormLabel htmlFor="password">密码:</FormLabel>
             <Input
               type="password"
@@ -89,9 +93,17 @@ const LoginPage = () => {
             />
             {error && <p style={{ color: "red" }}>{error}</p>}
           </FormControl>
-          <Button mt={4} colorScheme="teal" type="submit">
+
+          <Button colorScheme="teal" type="submit" mb={4} w="100%">
             登录
           </Button>
+
+          <Text textAlign="center">
+            没有账号？
+            <Button as="a" href="/register" colorScheme="teal" variant="link">
+              点击这里去注册
+            </Button>
+          </Text>
         </form>
       </Box>
     </Center>

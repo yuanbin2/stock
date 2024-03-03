@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Layout from "./pages/Layout";
 import HomePage from "./pages/HomePage";
 import ErrorPage from "./pages/ErrorPage";
@@ -12,27 +17,48 @@ import NewsdetailPage from "./pages/NewsdetailPage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 
-const AppRouter = () => (
-  <Router>
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<HomePage />} />
-        <Route path="stock/:id" element={<StockdetailPage />} />
+const PrivateRoute = ({
+  path,
+  element,
+}: {
+  path: string;
+  element: React.ReactNode;
+}) => {
+  const access = localStorage.getItem("accessToken");
 
-        <Route path="mycomment" element={<MycommentPage />} />
-        <Route path="mydetail" element={<MydetailPage />} />
-        <Route path="myorder" element={<MyordersPage />} />
-        <Route path="news" element={<NewsPage />} />
-        <Route path="news/:id" element={<NewsdetailPage />} />
+  if (!access) {
+    return <Navigate to="/login" />;
+  }
 
-        <Route path="mystock" element={<MystockPage />} />
-      </Route>
-      <Route path="/register" element={<RegisterPage />} />
-      <Route path="/login" element={<LoginPage />} />
+  return <Route path={path} element={element} />;
+};
 
-      <Route path="*" element={<ErrorPage />} />
-    </Routes>
-  </Router>
-);
+const AppRouter = () => {
+  const access = localStorage.getItem("accessToken");
+
+  return (
+    <Router>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route path=":id" element={<StockdetailPage />} />
+          {access ? (
+            <>
+              <Route path="mycomment" element={<MycommentPage />} />
+              <Route path="mydetail" element={<MydetailPage />} />
+              <Route path="myorder" element={<MyordersPage />} />
+              <Route path="news" element={<NewsPage />} />
+              <Route path="news/:id" element={<NewsdetailPage />} />
+              <Route path="mystock" element={<MystockPage />} />
+            </>
+          ) : null}
+        </Route>
+        <Route path="*" element={<LoginPage />} />
+      </Routes>
+    </Router>
+  );
+};
 
 export default AppRouter;

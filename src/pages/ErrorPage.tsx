@@ -1,43 +1,19 @@
-import { Box, Grid, GridItem, Heading, Show, Text } from "@chakra-ui/react";
-import { useRouteError, isRouteErrorResponse } from "react-router-dom";
-import NavBar from "../components/NavBar";
-import Aside from "../components/Aside";
+import { Box, Heading, Text, Button } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 const ErrorPage = () => {
-  // const routeError = useRouteError();
-
   return (
-    <>
-      <Grid
-        templateAreas={{
-          base: `"nav" "main"`,
-          lg: `"nav nav" "aside main"`,
-        }}
-        templateColumns={{
-          base: "1fr",
-          lg: "250px 1fr",
-        }}
-      >
-        <GridItem area="nav">
-          <NavBar />
-        </GridItem>
-        <Show above="lg">
-          <GridItem area="aside">
-            <Aside />
-          </GridItem>
-        </Show>
-        <GridItem area="main">
-          <Box padding={5}>
-            <Heading>Not Found</Heading>
-            {/* {isRouteErrorResponse(routeError) && routeError.status === 404 ? (
-              <Text>Page Not Found</Text>
-            ) : (
-              <Text>An error occurred</Text>
-            )} */}
-          </Box>
-        </GridItem>
-      </Grid>
-    </>
+    <Box textAlign="center" mt={20}>
+      <Heading as="h1" size="xl" mb={4}>
+        Oops! Something went wrong.
+      </Heading>
+      <Text fontSize="lg" mb={4}>
+        The page you are looking for could not be found.
+      </Text>
+      <Button as={Link} to="/" colorScheme="blue" size="md">
+        Go back to Home
+      </Button>
+    </Box>
   );
 };
 

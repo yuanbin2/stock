@@ -17,22 +17,6 @@ import NewsdetailPage from "./pages/NewsdetailPage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 
-const PrivateRoute = ({
-  path,
-  element,
-}: {
-  path: string;
-  element: React.ReactNode;
-}) => {
-  const access = localStorage.getItem("accessToken");
-
-  if (!access) {
-    return <Navigate to="/login" />;
-  }
-
-  return <Route path={path} element={element} />;
-};
-
 const AppRouter = () => {
   const access = localStorage.getItem("accessToken");
 
@@ -41,21 +25,23 @@ const AppRouter = () => {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/" element={<Layout />}>
-          <Route index element={<HomePage />} />
-          <Route path=":id" element={<StockdetailPage />} />
-          {access ? (
-            <>
-              <Route path="mycomment" element={<MycommentPage />} />
-              <Route path="mydetail" element={<MydetailPage />} />
-              <Route path="myorder" element={<MyordersPage />} />
-              <Route path="news" element={<NewsPage />} />
-              <Route path="news/:id" element={<NewsdetailPage />} />
-              <Route path="mystock" element={<MystockPage />} />
-            </>
-          ) : null}
-        </Route>
-        <Route path="*" element={<LoginPage />} />
+
+        {access ? (
+          <Route path="/" element={<Layout />}>
+            <Route index element={<HomePage />} />
+            <Route path=":id" element={<StockdetailPage />} />
+            <Route path="mycomment" element={<MycommentPage />} />
+            <Route path="mydetail" element={<MydetailPage />} />
+            <Route path="myorder" element={<MyordersPage />} />
+            <Route path="news" element={<NewsPage />} />
+            <Route path="news/:id" element={<NewsdetailPage />} />
+            <Route path="mystock" element={<MystockPage />} />
+          </Route>
+        ) : (
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        )}
+
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
     </Router>
   );

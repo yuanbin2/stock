@@ -6,7 +6,7 @@ const NavBar = () => {
   const handleLogout = () => {
     localStorage.removeItem("accessToken"); // 清空 access
     localStorage.removeItem("refreshToken"); // 清空 refresh
-
+    localStorage.removeItem("cartId");
     // 进行其他退出操作，如跳转到登录页面等
     window.location.reload();
   };

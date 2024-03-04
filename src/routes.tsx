@@ -16,6 +16,7 @@ import StockdetailPage from "./pages/StockdetailPage";
 import NewsdetailPage from "./pages/NewsdetailPage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
+import MycartPage from "./pages/MycartPage";
 
 const AppRouter = () => {
   const access = localStorage.getItem("accessToken");
@@ -36,6 +37,7 @@ const AppRouter = () => {
             <Route path="news" element={<NewsPage />} />
             <Route path="news/:id" element={<NewsdetailPage />} />
             <Route path="mystock" element={<MystockPage />} />
+            <Route path="mycart" element={<MycartPage />} />
           </Route>
         ) : (
           <Route path="*" element={<Navigate to="/login" replace />} />

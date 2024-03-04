@@ -16,29 +16,36 @@ const Aside = () => {
     mycomment: "我的评论",
     mydetail: "个人信息",
     news: "新闻界面",
+    mycart: "我的购物车",
   };
 
   return (
     <Box p={6}>
       <VStack spacing={4} align="stretch">
-        {["", "mystock", "myorder", "mycomment", "mydetail", "news"].map(
-          (index) => (
-            <Link key={index} to={`/${index}`}>
-              <Text
-                fontSize="lg"
-                p={2}
-                border="1px solid transparent"
-                _hover={{ color: "blue.500", bg: "gray.100" }}
-                _focus={{ outline: "none" }}
-                bg={selectedLink === index ? "gray.300" : "transparent"}
-                color="blue.500"
-                onClick={() => handleSelectLink(index)}
-              >
-                {urlMap[index]}
-              </Text>
-            </Link>
-          )
-        )}
+        {[
+          "",
+          "mystock",
+          "myorder",
+          "mycomment",
+          "mydetail",
+          "news",
+          "mycart",
+        ].map((index) => (
+          <Link key={index} to={`/${index}`}>
+            <Text
+              fontSize="lg"
+              p={2}
+              border="1px solid transparent"
+              _hover={{ color: "blue.500", bg: "gray.100" }}
+              _focus={{ outline: "none" }}
+              bg={selectedLink === index ? "gray.300" : "transparent"}
+              color="blue.500"
+              onClick={() => handleSelectLink(index)}
+            >
+              {urlMap[index]}
+            </Text>
+          </Link>
+        ))}
       </VStack>
     </Box>
   );

@@ -18,7 +18,6 @@ const StockList = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const { error, data } = useStocks(currentPage);
-
   const total_count = data?.count;
   let page_num = 0;
   //计算总页数

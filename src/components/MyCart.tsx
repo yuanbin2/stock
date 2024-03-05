@@ -26,12 +26,35 @@ const MyCart = () => {
       })
       .catch((error) => console.error("Error:", error));
   };
+
+  const handleAddToOrder = () => {
+    fetch(`http://127.0.0.1:4985/orders/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        cart_id: localStorage.getItem("cartId"),
+      }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          localStorage.removeItem("cartId"); // 将本地存储中的 cartId 删除
+          refetch(); // 重新获取数据
+        } else {
+          console.error("Failed to add items to order");
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+  };
+
   // 当data发生变化时重新获取
   useEffect(() => {
     if (data && data.id) {
       localStorage.setItem("cartId", data.id); // 将 data 中的 id 放入本地存储的 cartId 中
     }
   }, [data]);
+
   // 监听cartItem，当发生变化时重新获取
   useEffect(() => {
     // 监听 cartItem 的变化，并重新获取数据
@@ -46,6 +69,11 @@ const MyCart = () => {
     <>
       <div>
         <Heading>{localStorage.getItem("cartId")}</Heading>
+        {cartItem && cartItem.length > 0 && (
+          <Button mt={4} onClick={handleAddToOrder}>
+            Add to Order
+          </Button>
+        )}
       </div>
       <Box p={4} shadow="md" borderWidth="1px">
         <Text fontSize="xl">Stocks:</Text>

@@ -1,7 +1,5 @@
-import { FetchResponse } from "./useData";
 import { useQuery } from "@tanstack/react-query";
 import APIClient from "../services/api-client2";
-import { Stock } from "./useStocks";
 
 
 export interface Cart{

@@ -1,5 +1,4 @@
 import { Box, Grid, GridItem, Show } from "@chakra-ui/react";
-import StockList from "../components/StockList";
 import NavBar from "../components/NavBar";
 import { Outlet } from "react-router-dom";
 import Aside from "../components/Aside";

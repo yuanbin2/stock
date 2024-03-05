@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Box, Button, Heading, List, ListItem } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Collapse,
+  Heading,
+  List,
+  ListItem,
+} from "@chakra-ui/react";
 import useMyOrder, { Order, OrderItem } from "../Hooks/useMyOrder";
 import axios, { AxiosError } from "axios";
 
@@ -33,6 +40,17 @@ const MyOrder = () => {
     }
   };
 
+  //   处理闭合展开事件
+  const [openOrderId, setOpenOrderId] = useState<string | null>(null);
+
+  const handleToggle = (orderId: string) => {
+    if (openOrderId === orderId) {
+      setOpenOrderId(null);
+    } else {
+      setOpenOrderId(orderId);
+    }
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -43,9 +61,6 @@ const MyOrder = () => {
 
   return (
     <Box p={4}>
-      <Heading as="h1" size="xl" mb={4}>
-        My Orders
-      </Heading>
       <List spacing={6}>
         {orders.map((order: Order) => (
           <ListItem
@@ -55,38 +70,40 @@ const MyOrder = () => {
             p={3}
             rounded="md"
           >
-            <Box>
-              <strong>Order ID:</strong> {order.id}
-            </Box>
-            <Box>
-              <strong>Customer:</strong> {order.customer}
-            </Box>
-            <Box>
-              <strong>Placed At:</strong> {order.placed_at}
-            </Box>
-            <Box>
-              <strong>Payment Status:</strong> {order.payment_status}
-            </Box>
-            <Box>
-              <strong>Items:</strong>
-              <ul>
-                {order.items.map((item: OrderItem, index: number) => (
-                  <li key={index}>
-                    <strong>Item ID:</strong> {item.id}
-                    <br />
-                    <strong>Order ID:</strong> {item.order}
-                    <br />
-                    <strong>Stock:</strong> {item.stock}
-                    <br />
-                    <strong>Quantity:</strong> {item.quantity}
-                    <br />
-                    <strong>Unit Price:</strong> {item.unit_price}
-                  </li>
-                ))}
-              </ul>
-              <Button onClick={() => handlePurchase(order.id)}>Purchase</Button>
-              {purchaseStatus[order.id] && <p>{purchaseStatus[order.id]}</p>}
-            </Box>
+            <Button onClick={() => handleToggle(order.id.toString())}>
+              Toggle
+            </Button>
+            <strong>Order ID:</strong> {order.id}
+            <Collapse in={openOrderId === order.id.toString()} animateOpacity>
+              <Box mt={2}>
+                <strong>Customer:</strong> {order.customer}
+                <br />
+                <strong>Placed At:</strong> {order.placed_at}
+                <br />
+                <strong>Payment Status:</strong> {order.payment_status}
+                <br />
+                <strong>Items:</strong>
+                <ul>
+                  {order.items.map((item: OrderItem, index: number) => (
+                    <li key={index}>
+                      <strong>Item ID:</strong> {item.id}
+                      <br />
+                      <strong>Order ID:</strong> {item.order}
+                      <br />
+                      <strong>Stock:</strong> {item.stock}
+                      <br />
+                      <strong>Quantity:</strong> {item.quantity}
+                      <br />
+                      <strong>Unit Price:</strong> {item.unit_price}
+                    </li>
+                  ))}
+                </ul>
+                <Button onClick={() => handlePurchase(order.id)}>
+                  Purchase
+                </Button>
+                {purchaseStatus[order.id] && <p>{purchaseStatus[order.id]}</p>}
+              </Box>
+            </Collapse>
           </ListItem>
         ))}
       </List>

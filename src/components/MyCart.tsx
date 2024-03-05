@@ -26,12 +26,20 @@ const MyCart = () => {
       })
       .catch((error) => console.error("Error:", error));
   };
-
+  // 当data发生变化时重新获取
   useEffect(() => {
     if (data && data.id) {
       localStorage.setItem("cartId", data.id); // 将 data 中的 id 放入本地存储的 cartId 中
     }
   }, [data]);
+  // 监听cartItem，当发生变化时重新获取
+  useEffect(() => {
+    // 监听 cartItem 的变化，并重新获取数据
+    if (cartItem) {
+      refetch();
+    }
+  }, [cartItem]);
+
   if (error) return null;
 
   return (

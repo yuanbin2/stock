@@ -6,6 +6,7 @@ import {
   Heading,
   List,
   ListItem,
+  Text,
 } from "@chakra-ui/react";
 import useMyOrder, { Order, OrderItem } from "../Hooks/useMyOrder";
 import axios, { AxiosError } from "axios";
@@ -50,6 +51,10 @@ const MyOrder = () => {
       setOpenOrderId(orderId);
     }
   };
+
+  if (!orders || orders.length === 0) {
+    return <Text>暂无任何订单</Text>;
+  }
 
   if (isLoading) {
     return <div>Loading...</div>;

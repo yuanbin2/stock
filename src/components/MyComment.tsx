@@ -3,6 +3,9 @@ import { Box, Text, VStack } from "@chakra-ui/react";
 const MyComment = () => {
   const { data: comments, isLoading, isError } = useComment();
 
+  if (!comments || comments.length === 0) {
+    return <Text>没有做过任何评论</Text>;
+  }
   if (isLoading) {
     return <Text>Loading comments...</Text>;
   }

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import useCart from "../Hooks/useCart";
 import { Box, Button, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
 import useGetCartItems from "../Hooks/useGetCartItems";
+import axios from "axios";
 
 const MyCart = () => {
   const { data } = useCart();
@@ -28,19 +29,17 @@ const MyCart = () => {
   };
 
   const handleAddToOrder = () => {
-    fetch(`http://127.0.0.1:4985/orders/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    axios.defaults.headers.common[
+      "Authorization"
+    ] = `JWT ${localStorage.getItem("accessToken")}`;
+    axios
+      .post("http://127.0.0.1:4985/orders/", {
         cart_id: localStorage.getItem("cartId"),
-      }),
-    })
+      })
       .then((response) => {
-        if (response.ok) {
-          localStorage.removeItem("cartId"); // 将本地存储中的 cartId 删除
-          refetch(); // 重新获取数据
+        if (response.status === 200) {
+          localStorage.removeItem("cartId");
+          refetch();
         } else {
           console.error("Failed to add items to order");
         }
@@ -49,9 +48,16 @@ const MyCart = () => {
   };
 
   // 当data发生变化时重新获取
+  // useEffect(() => {
+  //   if (data && data.id) {
+  //     localStorage.setItem("cartId", data.id); // 将 data 中的 id 放入本地存储的 cartId 中
+  //   }
+  // }, [data]);
+  // 在 useEffect 中处理并存储到本地存储
   useEffect(() => {
     if (data && data.id) {
-      localStorage.setItem("cartId", data.id); // 将 data 中的 id 放入本地存储的 cartId 中
+      const sanitizedId = data.id.replace(/-/g, ""); // 去除连接符 "-"
+      localStorage.setItem("cartId", sanitizedId); // 将处理后的 id 放入本地存储的 cartId 中
     }
   }, [data]);
 

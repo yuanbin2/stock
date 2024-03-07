@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, Flex, Heading, Input, Text } from "@chakra-ui/react";
 import { Stock } from "../Hooks/useStocks";
+import axios from "axios";
 
 interface Props {
   stock: Stock | undefined;
@@ -70,24 +71,24 @@ const StockDetail = ({ stock }: Props) => {
   };
   // 添加评论
   const addComment = () => {
-    fetch(`http://127.0.0.1:4985/stocks/${stock?.id}/comment/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        stock: stock?.id,
-        content: commentContent,
-      }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to add comment");
+    axios.defaults.headers.common[
+      "Authorization"
+    ] = `JWT ${localStorage.getItem("accessToken")}`;
+    axios
+      .post(
+        `http://127.0.0.1:4985/stocks/${stock?.id}/comment/`,
+        {
+          stock: stock?.id,
+          content: commentContent,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Added comment:", data);
+      )
+      .then((response) => {
+        console.log("Added comment:", response.data);
         // 处理添加评论成功的逻辑
       })
       .catch((error) => {

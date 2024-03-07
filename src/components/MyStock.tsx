@@ -4,6 +4,10 @@ import useMyStock from "../Hooks/useUserstock";
 const MyStock = () => {
   const { data: userStock, isLoading, isError } = useMyStock();
 
+  if (!userStock || userStock.items.length === 0) {
+    return <Text>暂未购买任何股票</Text>;
+  }
+
   if (isLoading) {
     return <Text>Loading user stocks...</Text>;
   }

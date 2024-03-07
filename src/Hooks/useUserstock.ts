@@ -22,7 +22,7 @@ const apiClient = new APIClient<Userstock>('/customers/me/userstock');
 
 const useMyStock = ()=>
   useQuery<Userstock[]>({
-    queryKey: ['userstocks'],
+    queryKey: ['userstocks', useMyStock],
     queryFn: () =>
         apiClient.getItems(),
     staleTime: 3 * 60 * 1000, // 3min

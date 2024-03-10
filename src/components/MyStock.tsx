@@ -17,13 +17,22 @@ const MyStock = () => {
 
   const handleSellStock = async (stockId: number, quantity: number) => {
     try {
+      // 在这里定义你的请求头
+      const headers = {
+        Authorization: `JWT ${localStorage.getItem("accessToken")}`, // 假设你需要一个认证令牌
+        "Content-Type": "application/json", // 设置内容类型为 JSON
+        // 可以根据需要添加更多的头部信息
+      };
+
       await axios.post(
-        `http://127.0.0.1:4985/customers/me/userstock/sell_stock/`,
+        `http://127.0.0.1:8826/customers/me/userstock/sell_stock/`,
         {
           stock_id: stockId,
           quantity: quantity,
-        }
+        },
+        { headers: headers } // 将 headers 对象作为配置传递给 Axios 请求
       );
+
       // 成功卖出股票后，调用refetch刷新数据
       refetch();
     } catch (error) {

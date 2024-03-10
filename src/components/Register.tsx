@@ -29,7 +29,7 @@ const Register = () => {
       lastName: lastName,
     };
     axios
-      .post("http://127.0.0.1:4985/auth/users/", userData)
+      .post("http://127.0.0.1:8826/auth/users/", userData)
       .then((response) => {
         console.log("Registration successful:", response.data);
         setSuccessMessage("注册成功！请登录。");

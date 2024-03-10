@@ -9,6 +9,7 @@ import {
   Th,
   Thead,
   Tr,
+  Input,
 } from "@chakra-ui/react";
 
 import useStocks from "../Hooks/useStocks";
@@ -16,8 +17,9 @@ import { Link } from "react-router-dom";
 
 const StockList = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const { error, data } = useStocks(currentPage);
+  const { error, data } = useStocks(currentPage, searchTerm);
   const total_count = data?.count;
   let page_num = 0;
   //计算总页数
@@ -28,10 +30,22 @@ const StockList = () => {
     setCurrentPage(page);
   };
 
+  const handleSearch = () => {
+    // setCurrentPage(1); // 重置当前页数为第一页
+  };
+
   if (error) return <Text>{error.message}</Text>;
   else
     return (
       <>
+        <Input
+          placeholder="Search stock..."
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            setCurrentPage(1);
+          }}
+        />
         <Table variant="striped" colorScheme="gray">
           <Thead>
             <Tr>

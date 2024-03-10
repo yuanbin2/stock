@@ -13,11 +13,16 @@ export interface Stock {
   }
 
 const apiClient = new APIClient<Stock>('/stocks')
-const useStocks = (currentPage: number)=>
+const useStocks = (currentPage: number, search: string | null=null) =>
   useQuery<FetchResponse<Stock>, Error>({
-    queryKey: ['stocks', currentPage],
-    queryFn: () =>
-        apiClient.getPage('?page='+currentPage),
+    queryKey: ['stocks', currentPage, search],
+    queryFn: () => {
+      if (search !== null) {
+        return apiClient.getPage(`?page=${currentPage}&search=${search}`);
+      } else {
+        return apiClient.getPage(`?page=${currentPage}`);
+      }
+    },
     staleTime: 3 * 60 * 1000, // 3min
     keepPreviousData: true
   });

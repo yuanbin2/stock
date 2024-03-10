@@ -2,7 +2,18 @@ import React, { useEffect, useState } from "react";
 import { Box, Button, Flex, Heading, Input, Text } from "@chakra-ui/react";
 import { Stock } from "../Hooks/useStocks";
 import axios from "axios";
-
+import useStockHistory, { StockHistory } from "../Hooks/useStockHistory";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+import StockTrendChart from "./StockTrendChart";
 interface Props {
   stock: Stock | undefined;
 }
@@ -20,18 +31,31 @@ const StockDetail = ({ stock }: Props) => {
   const [addToCartLoading, setAddToCartLoading] = useState(false);
   const [commentContent, setCommentContent] = useState<string>("");
   const [stockComments, setStockComments] = useState<Comment[]>();
+  const [shouldFetchComments, setShouldFetchComments] = useState(true);
+  const {
+    data: stockHistory,
+    isLoading,
+    isError,
+  } = useStockHistory(stock?.id || "");
 
   // 获取股票评论数据
   useEffect(() => {
-    fetch(`http://127.0.0.1:4985/stocks/${stock?.id}/comment/`)
-      .then((response) => response.json())
-      .then((data) => {
-        setStockComments(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching stock comments:", error);
-      });
-  }, [stockComments]); // 当 stockComments 发生变化时进行刷新
+    if (shouldFetchComments && stock && stock.id) {
+      axios
+        .get(`http://127.0.0.1:8826/stocks/${stock.id}/comment/`)
+        .then((response) => {
+          setStockComments(response.data);
+          setShouldFetchComments(false); // 获取完数据后将 shouldFetchComments 置为 false
+        })
+        .catch((error) => {
+          console.error("Error fetching stock comments:", error);
+        });
+    }
+  }, [shouldFetchComments, stock?.id]);
+  const handleRefreshComments = () => {
+    setShouldFetchComments(true); // 设置 shouldFetchComments 为 true，触发重新获取评论数据
+    setCommentContent("");
+  };
 
   // 添加到购物车
   const addToCart = () => {
@@ -42,7 +66,7 @@ const StockDetail = ({ stock }: Props) => {
     setAddToCartLoading(true);
 
     fetch(
-      `http://127.0.0.1:4985/carts/${localStorage.getItem("cartId")}/items/`,
+      `http://127.0.0.1:8826/carts/${localStorage.getItem("cartId")}/items/`,
       {
         method: "POST",
         headers: {
@@ -76,7 +100,7 @@ const StockDetail = ({ stock }: Props) => {
     ] = `JWT ${localStorage.getItem("accessToken")}`;
     axios
       .post(
-        `http://127.0.0.1:4985/stocks/${stock?.id}/comment/`,
+        `http://127.0.0.1:8826/stocks/${stock?.id}/comment/`,
         {
           stock: stock?.id,
           content: commentContent,
@@ -114,7 +138,14 @@ const StockDetail = ({ stock }: Props) => {
             </Flex>
           </>
         )}
+
+        {/* 显示股票历史数据 */}
+        {isLoading && <Text>Loading...</Text>}
+        {isError && <Text>Error fetching stock history data</Text>}
+        {/* 显示股票趋势图 */}
+        {stockHistory && <StockTrendChart stockHistory={stockHistory} />}
       </Box>
+
       {/* 添加评论 */}
       <Box p={4} borderWidth="1px" borderRadius="md" shadow="md">
         {/* 添加评论部分 */}
@@ -127,7 +158,13 @@ const StockDetail = ({ stock }: Props) => {
             value={commentContent}
             onChange={(e) => setCommentContent(e.target.value)}
           />
-          <Button colorScheme="teal" onClick={addComment}>
+          <Button
+            colorScheme="teal"
+            onClick={() => {
+              addComment();
+              handleRefreshComments();
+            }}
+          >
             Add Comment
           </Button>
         </Flex>

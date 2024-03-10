@@ -34,7 +34,7 @@ const LoginPage = () => {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:4985/auth/jwt/create",
+        "http://127.0.0.1:8826/auth/jwt/create",
         requestBody
       );
 

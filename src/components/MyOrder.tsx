@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import useMyOrder, { Order, OrderItem } from "../Hooks/useMyOrder";
 import axios, { AxiosError } from "axios";
+import { format } from "date-fns";
 
 const MyOrder = () => {
   const { data: orders, isLoading, isError } = useMyOrder();
@@ -27,13 +28,14 @@ const MyOrder = () => {
       );
       setPurchaseStatus((prevStatus) => ({
         ...prevStatus,
-        [orderId]: "Purchase successful",
+        [orderId]: "购买成功已将此股票列表中股票添加到您的所持股票中",
       }));
     } catch (error: AxiosError | unknown) {
       if (axios.isAxiosError(error)) {
-        setPurchaseStatus((prevStatus) => ({
-          ...prevStatus,
-          [orderId]: (error as AxiosError).message,
+        const errorMessage = (error as any).response?.data?.error;
+        setPurchaseStatus((prevErrors) => ({
+          ...prevErrors,
+          [orderId]: errorMessage,
         }));
       } else {
         setPurchaseStatus((prevStatus) => ({
@@ -79,35 +81,45 @@ const MyOrder = () => {
             rounded="md"
           >
             <Button onClick={() => handleToggle(order.id.toString())}>
-              Toggle
+              展开/关闭
             </Button>
-            <strong>Order ID:</strong> {order.id}
+            <strong>订单 ID:</strong> {order.id}
             <Collapse in={openOrderId === order.id.toString()} animateOpacity>
               <Box mt={2}>
-                <strong>Customer:</strong> {order.customer}
+                <strong>用户 ID:</strong> {order.customer}
                 <br />
-                <strong>Placed At:</strong> {order.placed_at}
+                <strong>创建时间:</strong>{" "}
+                {format(new Date(order.placed_at), "yyyy-MM-dd HH:mm:ss")}
                 <br />
-                <strong>Payment Status:</strong> {order.payment_status}
+                <strong>支付状态:</strong>
+                {order.payment_status === "C"
+                  ? "已支付"
+                  : order.payment_status === "P"
+                  ? "未支付"
+                  : "支付失败"}
                 <br />
-                <strong>Items:</strong>
+                <strong>包含股票条目:</strong>
                 <ul>
                   {order.items.map((item: OrderItem, index: number) => (
                     <li key={index}>
-                      <strong>Item ID:</strong> {item.id}
+                      <strong>条目 ID:</strong> {item.id}
                       <br />
-                      <strong>Order ID:</strong> {item.order}
+                      <strong>股票 ID:</strong> {item.stock}
                       <br />
-                      <strong>Stock:</strong> {item.stock}
+                      <strong>数量:</strong> {item.quantity}
                       <br />
-                      <strong>Quantity:</strong> {item.quantity}
+                      <strong>单价:</strong> {Number(item.unit_price) * 1.0}
                       <br />
-                      <strong>Unit Price:</strong> {item.unit_price}
+                      <strong>总价:</strong>{" "}
+                      {(item.quantity * Number(item.unit_price)).toFixed(2)}
                     </li>
                   ))}
                 </ul>
-                <Button onClick={() => handlePurchase(order.id)}>
-                  Purchase
+                <Button
+                  onClick={() => handlePurchase(order.id)}
+                  disabled={order.payment_status === "C"}
+                >
+                  购买
                 </Button>
                 {purchaseStatus[order.id] && <p>{purchaseStatus[order.id]}</p>}
               </Box>

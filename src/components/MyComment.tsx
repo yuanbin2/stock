@@ -1,5 +1,6 @@
 import useComment from "../Hooks/useComment";
 import { Box, Text, VStack } from "@chakra-ui/react";
+import { format } from "date-fns";
 const MyComment = () => {
   const { data: comments, isLoading, isError } = useComment();
 
@@ -19,10 +20,9 @@ const MyComment = () => {
       {comments &&
         comments.map((comment) => (
           <Box key={comment.id} borderWidth="1px" borderRadius="md" p={4}>
-            <Text fontWeight="bold">Customer: {comment.customer}</Text>
-            <Text>Stock: {comment.stock}</Text>
+            <Text>股票ID: {comment.stock}</Text>
             <Text>{comment.content}</Text>
-            <Text>{comment.time}</Text>
+            <Text>{format(new Date(comment.time), "yyyy-MM-dd HH:mm:ss")}</Text>
           </Box>
         ))}
     </VStack>

@@ -11,6 +11,7 @@ const CustomerDetail: React.FC = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [isEditingPhone, setIsEditingPhone] = useState(false);
 
   // 处理日期变化
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,6 +22,15 @@ const CustomerDetail: React.FC = () => {
     if (e.target.files && e.target.files[0]) {
       setAvatarFile(e.target.files[0]);
     }
+  };
+  const handlePhoneUpdate = (e: React.FormEvent) => {
+    e.preventDefault(); // 阻止表单默认提交行为
+
+    // 发送更新请求（这部分可能需要根据实际情况调整）
+    // ...
+
+    // 更新完成后切换回非编辑状态
+    setIsEditingPhone(false);
   };
 
   if (isLoading) {
@@ -77,52 +87,69 @@ const CustomerDetail: React.FC = () => {
   };
 
   return (
-    <Box p={4} maxW="md" borderWidth="1px" borderRadius="lg">
-      <label htmlFor="avatarUpload">Avatar:</label>
-      <br />
-      {avatarFile ? (
-        <img
-          src={URL.createObjectURL(avatarFile)}
-          alt="Selected Avatar"
-          height="100"
-        />
-      ) : (
-        <Avatar src={avatarPrefix + data.avatar} size="xl" />
-      )}
-      <br />
-      <input
-        type="file"
-        id="avatarUpload"
-        accept="image/*"
-        onChange={handleAvatarChange}
-      />
-      <Text mt={4} fontWeight="bold">
-        {data.membership} Member
-      </Text>
-      <Text>UserID: {data.user_id}</Text>
-      <Text>
-        Phone:{" "}
-        <Input
-          value={data.phone || ""}
-          onChange={(e) => handleInputChange("phone", e.target.value)}
-        />
-      </Text>
-      <div>
-        <label htmlFor="birthDate">Birth Date:</label>
-        <br />
-        <input
-          type="date"
-          id="birthDate"
-          value={selectedDate || ""}
-          onChange={handleDateChange}
-        />
-      </div>
+    <form onSubmit={handleUpdate}>
+      <Box p={4} maxW="md" borderWidth="1px" borderRadius="lg">
+        <label htmlFor="avatarUpload">
+          <Avatar
+            src={
+              avatarFile
+                ? URL.createObjectURL(avatarFile)
+                : avatarPrefix + data.avatar
+            }
+            size="xl"
+            cursor="pointer" // 鼠标移上去显示手型
+          />
+          <input
+            type="file"
+            id="avatarUpload"
+            accept="image/*"
+            onChange={handleAvatarChange}
+            style={{ display: "none" }} // 隐藏原生文件输入框
+          />
+        </label>
 
-      <Text>Account Balance: {data.account_balance}</Text>
-      <Button onClick={handleUpdate}>Update</Button>
-
-      {isUpdating && <div>Updating...</div>}
-    </Box>
+        <Text mt={4} fontWeight="bold">
+          用户类型:{" "}
+          {data.membership === "B"
+            ? "普通用户"
+            : data.membership === "S"
+            ? "普通会员"
+            : data.membership === "G"
+            ? "超级会员"
+            : "未知类型"}
+        </Text>
+        <Text>UserID: {data.user_id}</Text>
+        <div>
+          <Text>手机号: </Text>
+          {isEditingPhone ? (
+            <form onSubmit={handlePhoneUpdate}>
+              <Input
+                type="text"
+                value={updatedData?.phone || data?.phone || "1"}
+                onChange={(e) => handleInputChange("phone", e.target.value)}
+              />
+            </form>
+          ) : (
+            <Text onClick={() => setIsEditingPhone(true)}>
+              {updatedData?.phone || data.phone || "点击此处编辑"}
+            </Text>
+          )}
+        </div>
+        <div>
+          <label htmlFor="birthDate">出生日期:</label>
+          <br />
+          <input
+            type="date"
+            id="birthDate"
+            value={selectedDate || ""}
+            onChange={handleDateChange}
+          />
+        </div>
+        <Text>账户余额: {data.account_balance}</Text>
+        <Button onClick={handleUpdate}>Update</Button>
+        {isUpdating && <div>Updating...</div>}
+      </Box>
+    </form>
   );
 };
 

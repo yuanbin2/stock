@@ -8,6 +8,7 @@ import {
   Tooltip,
   Legend,
   Line,
+  Bar,
 } from "recharts";
 import { StockHistory } from "../Hooks/useStockHistory";
 
@@ -43,6 +44,18 @@ const StockTrendChart = ({
           type="monotone"
           dataKey="closing_price_adjusted"
           stroke="#8884d8"
+          activeDot={{ r: 8 }}
+        />
+        <Line
+          type="monotone"
+          dataKey="highest_price"
+          stroke="#ff433b"
+          activeDot={{ r: 8 }}
+        />
+        <Line
+          type="monotone"
+          dataKey="lowest_price"
+          stroke="#286c34"
           activeDot={{ r: 8 }}
         />
       </LineChart>

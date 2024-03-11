@@ -7,6 +7,7 @@ import {
   FormLabel,
   Stack,
   FormErrorMessage,
+  Text,
 } from "@chakra-ui/react";
 
 const Register = () => {
@@ -20,7 +21,6 @@ const Register = () => {
   const [successMessage, setSuccessMessage] = useState("");
 
   const handleRegister = () => {
-    // 省略部分代码
     const userData = {
       username: username,
       password: password,

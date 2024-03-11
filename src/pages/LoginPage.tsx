@@ -9,8 +9,12 @@ import {
   Center,
   FormErrorMessage,
   Text,
+  VStack,
+  Flex,
+  Heading,
 } from "@chakra-ui/react";
 import { Link, BrowserRouter as Router } from "react-router-dom";
+import background from "../assets/stock-background.jpg";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -63,49 +67,65 @@ const LoginPage = () => {
   };
 
   return (
-    <Center>
-      <Box w="md" p={4} borderWidth="1px" borderRadius="md">
-        <form onSubmit={handleLogin}>
-          <FormControl isRequired isInvalid={error !== ""} mb={4}>
-            <FormLabel htmlFor="username">用户名:</FormLabel>
-            <Input
-              type="text"
-              id="username"
-              value={username}
-              onChange={(event) => {
-                setUsername(event.target.value);
-                setError("");
-              }}
-            />
-            <FormErrorMessage>{error}</FormErrorMessage>
-          </FormControl>
+    <Center
+      bgImage={`url(${background})`}
+      bgSize="cover"
+      bgPosition="center"
+      bgRepeat="no-repeat"
+    >
+      <Flex h="100vh" justify="center" align="center">
+        <Box
+          w="md"
+          p={4}
+          borderWidth="1px"
+          borderRadius="md"
+          backgroundColor="rgba(0, 0, 0, 0.7)"
+        >
+          <Heading as="h1" size="xl" textAlign="center">
+            欢迎登录
+          </Heading>
+          <form onSubmit={handleLogin}>
+            <FormControl isRequired isInvalid={error !== ""} mb={4}>
+              <FormLabel htmlFor="username">用户名:</FormLabel>
+              <Input
+                type="text"
+                id="username"
+                value={username}
+                onChange={(event) => {
+                  setUsername(event.target.value);
+                  setError("");
+                }}
+              />
+              <FormErrorMessage>{error}</FormErrorMessage>
+            </FormControl>
 
-          <FormControl isRequired isInvalid={error !== ""} mb={4}>
-            <FormLabel htmlFor="password">密码:</FormLabel>
-            <Input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(event) => {
-                setPassword(event.target.value);
-                setError("");
-              }}
-            />
-            {error && <p style={{ color: "red" }}>{error}</p>}
-          </FormControl>
+            <FormControl isRequired isInvalid={error !== ""} mb={4}>
+              <FormLabel htmlFor="password">密码:</FormLabel>
+              <Input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(event) => {
+                  setPassword(event.target.value);
+                  setError("");
+                }}
+              />
+              {error && <p style={{ color: "red" }}>{error}</p>}
+            </FormControl>
 
-          <Button colorScheme="teal" type="submit" mb={4} w="100%">
-            登录
-          </Button>
-
-          <Text textAlign="center">
-            没有账号？
-            <Button as="a" href="/register" colorScheme="teal" variant="link">
-              点击这里去注册
+            <Button colorScheme="teal" type="submit" mb={4} w="100%">
+              登录
             </Button>
-          </Text>
-        </form>
-      </Box>
+
+            <Text textAlign="center">
+              没有账号？
+              <Button as="a" href="/register" colorScheme="teal" variant="link">
+                点击这里去注册
+              </Button>
+            </Text>
+          </form>
+        </Box>
+      </Flex>
     </Center>
   );
 };

@@ -18,6 +18,9 @@ const MyOrder = () => {
   }>({});
 
   const handlePurchase = async (orderId: number) => {
+    axios.defaults.headers.common[
+      "Authorization"
+    ] = `JWT ${localStorage.getItem("accessToken")}`;
     try {
       const response = await axios.get(
         `http://127.0.0.1:7678/orders/${orderId}/purchase/`

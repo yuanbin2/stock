@@ -20,7 +20,7 @@ const MyOrder = () => {
   const handlePurchase = async (orderId: number) => {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8826/orders/${orderId}/purchase/`
+        `http://127.0.0.1:7678/orders/${orderId}/purchase/`
       );
       setPurchaseStatus((prevStatus) => ({
         ...prevStatus,

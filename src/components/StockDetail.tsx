@@ -42,7 +42,7 @@ const StockDetail = ({ stock }: Props) => {
   useEffect(() => {
     if (shouldFetchComments && stock && stock.id) {
       axios
-        .get(`http://127.0.0.1:8826/stocks/${stock.id}/comment/`)
+        .get(`http://127.0.0.1:7678/stocks/${stock.id}/comment/`)
         .then((response) => {
           setStockComments(response.data);
           setShouldFetchComments(false); // 获取完数据后将 shouldFetchComments 置为 false
@@ -66,7 +66,7 @@ const StockDetail = ({ stock }: Props) => {
     setAddToCartLoading(true);
 
     fetch(
-      `http://127.0.0.1:8826/carts/${localStorage.getItem("cartId")}/items/`,
+      `http://127.0.0.1:7678/carts/${localStorage.getItem("cartId")}/items/`,
       {
         method: "POST",
         headers: {
@@ -100,7 +100,7 @@ const StockDetail = ({ stock }: Props) => {
     ] = `JWT ${localStorage.getItem("accessToken")}`;
     axios
       .post(
-        `http://127.0.0.1:8826/stocks/${stock?.id}/comment/`,
+        `http://127.0.0.1:7678/stocks/${stock?.id}/comment/`,
         {
           stock: stock?.id,
           content: commentContent,

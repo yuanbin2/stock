@@ -10,7 +10,7 @@ const MyCart = () => {
 
   const handleDelete = (itemId: number) => {
     fetch(
-      `http://127.0.0.1:8826/carts/${localStorage.getItem(
+      `http://127.0.0.1:7678/carts/${localStorage.getItem(
         "cartId"
       )}/items/${itemId}`,
       {
@@ -33,7 +33,7 @@ const MyCart = () => {
       "Authorization"
     ] = `JWT ${localStorage.getItem("accessToken")}`;
     axios
-      .post("http://127.0.0.1:8826/orders/", {
+      .post("http://127.0.0.1:7678/orders/", {
         cart_id: localStorage.getItem("cartId"),
       })
       .then((response) => {

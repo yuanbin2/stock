@@ -25,7 +25,7 @@ const MyStock = () => {
       };
 
       await axios.post(
-        `http://127.0.0.1:8826/customers/me/userstock/sell_stock/`,
+        `http://127.0.0.1:7678/customers/me/userstock/sell_stock/`,
         {
           stock_id: stockId,
           quantity: quantity,

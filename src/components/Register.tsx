@@ -25,8 +25,8 @@ const Register = () => {
       username: username,
       password: password,
       email: email,
-      firstName: firstName,
-      lastName: lastName,
+      first_name: firstName,
+      last_name: lastName,
     };
     axios
       .post("http://127.0.0.1:7678/auth/users/", userData)
